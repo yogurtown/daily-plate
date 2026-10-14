@@ -7,3 +7,6 @@
 - All data remains in browser localStorage.
 
 Before upgrading, export a backup from the working version if possible. Upload `index.html` to your existing GitHub Pages location.
+
+## Version 12
+Added the heading “How Much Can I Still Eat?” immediately above the Protein and Carbohydrates cooked-food portion tables in Daily Summary. No change to food calculations, presets, storage keys or food logs.

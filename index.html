@@ -55,7 +55,7 @@
 /* V9: brand, quick navigation, independent daily target presets */
 html{scroll-behavior:smooth;scroll-padding-top:85px}
 .brand{display:flex;align-items:center;gap:16px;min-width:0}
-.brand-logo{width:auto;height:100px;max-width:125px;object-fit:contain;flex:none}
+.brand-logo{width:auto;height:130px;max-width:150px;object-fit:contain;flex:none}
 .quick-nav{display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .quick-nav a{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;text-decoration:none;color:#315e42;background:#e8f0e6;border:1px solid #d9e6d8;border-radius:999px;font-size:.84rem;font-weight:750;white-space:nowrap}
 .quick-nav a:hover,.quick-nav a:focus-visible{background:#d7e8d7;outline-offset:2px}
@@ -69,10 +69,10 @@ html{scroll-behavior:smooth;scroll-padding-top:85px}
  .quick-nav a{padding:11px 4px;font-size:.73rem;border-radius:9px}
  .target-preset{margin:14px 17px 0}
 }
-@media(max-width:440px){header{flex-wrap:wrap}header label{margin-left:auto}.brand-logo{height:74px}}
+@media(max-width:440px){header{flex-wrap:wrap}header label{margin-left:auto}.brand-logo{height:100px;width:100px;max-width:100px}}
 
 /* V10 refinements */
-.brand-logo{width:100px;height:100px;max-width:100px;object-fit:cover;border-radius:16px}
+.brand-logo{width:130px;height:130px;max-width:130px;object-fit:cover;border-radius:16px}
 .quick-nav a{border-radius:10px;font-weight:600}
 .targets-details>summary .fa-caret-down{color:#426d50;font-size:1.1rem;transition:transform .2s}
 .targets-details[open]>summary .fa-caret-down{transform:rotate(180deg)}
@@ -82,7 +82,7 @@ html{scroll-behavior:smooth;scroll-padding-top:85px}
 .log-date-label input{font-size:.84rem;padding:10px 8px}
 .sr-only{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .caret-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%23315e42' d='M1 3h10L6 9z'/%3E%3C/svg%3E");background-size:12px 12px;background-position:right 13px center;background-repeat:no-repeat;padding-right:33px}
-@media(max-width:700px){.brand-logo{height:76px;width:76px}.foodlog-heading{flex-wrap:wrap}.log-date-actions{gap:6px}.log-date-label{width:145px}.log-date-label input{font-size:.75rem}.quick-nav a{border-radius:8px;font-weight:600}}
+@media(max-width:700px){.brand-logo{height:100px;width:100px;max-width:100px}.foodlog-heading{flex-wrap:wrap}.log-date-actions{gap:6px}.log-date-label{width:145px}.log-date-label input{font-size:.75rem}.quick-nav a{border-radius:8px;font-weight:600}}
 
 /* V12: give the cooked-food conversion tables a clear shared heading */
 .remaining-portions-heading{margin-top:22px;padding-top:18px;border-top:1px solid #e1e6dd}.remaining-portions-heading h2{margin:0;font-size:1.1rem;letter-spacing:-.02em}.remaining-portions-heading + .portions-grid{margin-top:12px;padding-top:0;border-top:0}
@@ -106,12 +106,13 @@ html{scroll-behavior:smooth;scroll-padding-top:85px}
 <script>
 const SEED=[['Cooked lean white fish',110,22,0,2.4,1],['Cooked lean pork',175,27,0,7.4,1],['Cooked chicken breast',165,31,0,3.6,1],['Cooked lean beef',190,27,0,9,1],['Cooked white rice',130,2.7,28,0.3,0],['Cooking oil',900,0,0,100,0],['Soy sauce',53,8,5,0.6,0],['Chocolate bar (example)',540,7,59,30,0],['Juice drink (example)',44,0,11,0,0],['Kikiam (estimate)',240,8,24,12,0],['Pork siomai (estimate)',210,12,18,10,0],['Vegetable takoyaki (estimate)',180,4,30,5,0],['Cheese bread (estimate)',350,10,55,10,0]].map((x,i)=>({id:'seed'+i,name:x[0],cal:x[1],protein:x[2],carbs:x[3],fat:x[4],isProtein:!!x[5]}));
 const EXTRA_CARBS=[['Cooked oatmeal (water)',71,2.5,12,1.5],['White bread',265,9,49,3.2],['Boiled potato',87,1.9,20,0.1],['Cooked sweet potato',90,2,21,0.2],['Cooked pasta',158,5.8,31,0.9]].map((x,i)=>({id:'carb-v7-'+i,name:x[0],cal:x[1],protein:x[2],carbs:x[3],fat:x[4],isProtein:false,isCarb:true}));
-const COACH_TARGET={cal:1290,protein:55,carbs:155,fat:50};
-const base={targets:{...COACH_TARGET},targetPreset:"k",targetPresets:{k:{...COACH_TARGET},red:{cal:1650,protein:90,carbs:195,fat:57},other:null},foods:[...SEED,...EXTRA_CARBS],logs:{}};
+const COACH_TARGET={cal:1200,protein:55,carbs:110,fat:60};
+const RED_TARGET={cal:1900,protein:100,carbs:240,fat:60};
+const base={targets:{...COACH_TARGET},targetPreset:"k",targetPresets:{k:{...COACH_TARGET},red:{...RED_TARGET},other:null},foods:[...SEED,...EXTRA_CARBS],logs:{}};
 function load(){try{let v=JSON.parse(localStorage.getItem('dailyplate-v1'));return v&&v.targets&&Array.isArray(v.foods)&&v.logs?v:structuredClone(base)}catch{return structuredClone(base)}}
 let state=load();
 // Migrate browser data from V8: preserve its current targets under K's preset.
-if(!state.targetPresets)state.targetPresets={k:{...state.targets},red:{cal:1650,protein:90,carbs:195,fat:57},other:null};if(!state.targetPresets.red)state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};
+if(!state.targetPresets)state.targetPresets={k:{...state.targets},red:{...RED_TARGET},other:null};if(!state.targetPresets.red)state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};
 if(!['k','red','other'].includes(state.targetPreset))state.targetPreset='k';
 if(!state.targetPresets.k)state.targetPresets.k={...COACH_TARGET};
 if(!state.targetPresets.red)state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};
@@ -122,8 +123,25 @@ if(!state.migrations?.v11){
  state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};
  state.migrations={...(state.migrations||{}),v11:true};
 }
+// V13 one-time preset update; retain logs, custom library foods and Others values.
+if(!state.migrations?.v13){
+ state.targetPresets.k={...COACH_TARGET};
+ state.targetPresets.red={...RED_TARGET};
+ state.migrations={...(state.migrations||{}),v13:true};
+}
 state.targets={...(state.targetPresets[state.targetPreset]||state.targetPresets.k)};
-if(!state.foods.some(x=>x.id==='seed4'||x.name.toLowerCase()==='cooked white rice'))state.foods.unshift({...SEED[4]});for(let food of EXTRA_CARBS)if(!state.foods.some(x=>x.id===food.id||x.name.toLowerCase()===food.name.toLowerCase()))state.foods.push({...food});const $=id=>document.getElementById(id);const f=n=>Number(n||0);const fmt=n=>Number(n).toFixed(1).replace(/\.0$/,'');const today=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};$('day').value=today();function save(){localStorage.setItem('dailyplate-v1',JSON.stringify(state))}function log(){return state.logs[$('day').value]||[]}function entryNutrition(e){if(e.nutrition)return e.nutrition;let food=state.foods.find(x=>x.id===e.foodId);let result={cal:0,protein:0,carbs:0,fat:0};if(food)for(let k of Object.keys(result))result[k]=f(food[k])*f(e.grams)/100;return result}
+if(!state.foods.some(x=>x.id==='seed4'||x.name.toLowerCase()==='cooked white rice'))state.foods.unshift({...SEED[4]});for(let food of EXTRA_CARBS)if(!state.foods.some(x=>x.id===food.id||x.name.toLowerCase()===food.name.toLowerCase()))state.foods.push({...food});const $=id=>document.getElementById(id);const f=n=>Number(n||0);const fmt=n=>Number(n).toFixed(1).replace(/\.0$/,'');const today=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};$('day').value=today();
+// Recalculate the local calendar date while the tab stays open overnight.
+// Returning to the tab after sleep also refreshes the selected day.
+let currentLocalDay=today();
+function syncCalendarDay(){
+ const next=today();
+ if(next!==currentLocalDay){currentLocalDay=next;$('day').value=next;render();}
+}
+window.setInterval(syncCalendarDay,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncCalendarDay()});
+window.addEventListener('focus',syncCalendarDay);
+function save(){localStorage.setItem('dailyplate-v1',JSON.stringify(state))}function log(){return state.logs[$('day').value]||[]}function entryNutrition(e){if(e.nutrition)return e.nutrition;let food=state.foods.find(x=>x.id===e.foodId);let result={cal:0,protein:0,carbs:0,fat:0};if(food)for(let k of Object.keys(result))result[k]=f(food[k])*f(e.grams)/100;return result}
 function entryName(e){return e.name||state.foods.find(x=>x.id===e.foodId)?.name||'Unknown food'}
 function totals(){return log().reduce((a,e)=>{let n=entryNutrition(e);for(let k of ['cal','protein','carbs','fat'])a[k]+=f(n[k]);return a},{cal:0,protein:0,carbs:0,fat:0})}
 function el(tag,text){let n=document.createElement(tag);n.textContent=text;return n}function cell(row,text){row.appendChild(el('td',text))}
@@ -173,5 +191,5 @@ document.querySelectorAll('input[name=entryMode]').forEach(input=>input.addEvent
 $('add').onclick=()=>{let day=$('day').value;if(!day)return alert('Select a date.');let mode=getMode(),entry={id:(crypto.randomUUID?.()||String(Date.now()+Math.random())),meal:$('meal').value,note:$('note').value.trim()};if(mode==='estimate'){let name=$('estimateName').value.trim();if(!name)return alert('Enter the food or snack name.');let nutrition={};for(let [id,k] of [['estCal','cal'],['estProtein','protein'],['estCarbs','carbs'],['estFat','fat']]){if($(id).value.trim()===''||!Number.isFinite(Number($(id).value))||Number($(id).value)<0)return alert('Enter all four estimated nutrition values (use 0 when appropriate).');nutrition[k]=Number($(id).value)}Object.assign(entry,{name,nutrition,estimated:true,displayAmount:'Estimated portion'});if($('saveSnack').checked){let existing=state.foods.find(x=>x.name.toLowerCase()===name.toLowerCase()&&x.servingNutrition);if(existing){if(!confirm('Update the saved serving for '+name+'?'))return;existing.servingNutrition={...nutrition}}else{state.foods.push({id:'portion-'+Date.now()+'-'+Math.random(),name,cal:nutrition.cal,protein:nutrition.protein,carbs:nutrition.carbs,fat:nutrition.fat,isProtein:false,servingNutrition:{...nutrition}})}}}else{let food=state.foods.find(x=>x.id===$('food').value);if(!food)return alert('Choose a food.');let grams=Number($('grams').value);if(mode==='serving'&&food.servingNutrition){let count=Number($('servings').value);if(!Number.isFinite(count)||count<=0)return alert('Enter a valid number of servings.');entry.displayAmount=fmt(count)+' saved portion(s)';entry.estimated=true;entry.foodId=food.id;entry.name=food.name;entry.nutrition=Object.fromEntries(['cal','protein','carbs','fat'].map(k=>[k*'' ,food.servingNutrition[k]*count]));}else if(mode==='serving'){let count=Number($('servings').value),per=Number($('gramsPerServing').value);if(!Number.isFinite(count)||count<=0||!Number.isFinite(per)||per<=0)return alert('Enter a valid number of servings and grams per serving.');grams=count*per;entry.displayAmount=fmt(count)+' serving(s) (~'+fmt(grams)+'g)';entry.estimated=true;}if(!food.servingNutrition||mode==='grams'){if(food.servingNutrition)return alert('This saved snack is portion-based. Select Pieces / servings instead.');if(!Number.isFinite(grams)||grams<=0)return alert('Enter grams greater than zero.');entry.foodId=food.id;entry.grams=grams;entry.name=food.name;entry.nutrition=Object.fromEntries(['cal','protein','carbs','fat'].map(k=>[k,food[k]*grams/100]));}}state.logs[day]??=[];state.logs[day].push(entry);$('note').value='';if(mode==='estimate'){for(let id of ['estimateName','estCal','estProtein','estCarbs','estFat'])$(id).value='';$('saveSnack').checked=false;}save();render()};
 $('resetDay').onclick=()=>{let day=$('day').value;if(!log().length)return alert('No food logs to reset for this date.');if(!confirm('Delete all '+log().length+' food log entries for '+day+'? Your Food Library and targets will stay unchanged.'))return;delete state.logs[day];save();render()};
 $('addFood').onclick=()=>{let name=$('newName').value.trim();if(!name)return alert('Enter a food name.');let vals={};for(let [id,k] of [['newCal','cal'],['newProtein','protein'],['newCarbs','carbs'],['newFat','fat']]){if($(id).value.trim()===''||!Number.isFinite(Number($(id).value))||Number($(id).value)<0)return alert('Please enter all four values per 100g.');vals[k]=Number($(id).value)}state.foods.push({id:'custom-'+Date.now()+'-'+Math.random(),name,...vals,isProtein:vals.protein>=15});for(let id of ['newName','newCal','newProtein','newCarbs','newFat'])$(id).value='';save();render()};function download(name,text,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([text],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}$('backup').onclick=()=>download('daily-plate-backup.json',JSON.stringify(state,null,2),'application/json');$('export').onclick=()=>{let rows=[['Date','Food','Amount','Calories','Protein','Carbs','Fat','Meal','Note','Estimated']];for(let [date,entries] of Object.entries(state.logs))for(let e of entries){let n=entryNutrition(e);rows.push([date,entryName(e),e.displayAmount||(e.grams!=null?fmt(e.grams)+'g':'—'),...['cal','protein','carbs','fat'].map(k=>fmt(n[k])),e.meal||'',e.note||'',e.estimated?'Yes':'No'])}download('daily-plate-logs.csv',rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n'),'text/csv')};
-$('restore').onchange=async e=>{let file=e.target.files[0];if(!file)return;try{let v=JSON.parse(await file.text());if(!v.targets||!Array.isArray(v.foods)||!v.logs||!confirm('Replace all current tracker data with this backup?'))return;state=v;if(!state.targetPresets)state.targetPresets={k:{...state.targets},red:{cal:1650,protein:90,carbs:195,fat:57},other:null};if(!state.targetPresets.red)state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};if(!['k','red','other'].includes(state.targetPreset))state.targetPreset='k';if(!state.foods.some(x=>x.id==='seed4'||x.name.toLowerCase()==='cooked white rice'))state.foods.unshift({...SEED[4]});save();initTargets();render()}catch{alert('Invalid backup file.')}finally{e.target.value=''}};initTargets();entryModeChange();render();save();
+$('restore').onchange=async e=>{let file=e.target.files[0];if(!file)return;try{let v=JSON.parse(await file.text());if(!v.targets||!Array.isArray(v.foods)||!v.logs||!confirm('Replace all current tracker data with this backup?'))return;state=v;if(!state.targetPresets)state.targetPresets={k:{...state.targets},red:{...RED_TARGET},other:null};if(!state.targetPresets.red)state.targetPresets.red={cal:1650,protein:90,carbs:195,fat:57};if(!['k','red','other'].includes(state.targetPreset))state.targetPreset='k';if(!state.foods.some(x=>x.id==='seed4'||x.name.toLowerCase()==='cooked white rice'))state.foods.unshift({...SEED[4]});save();initTargets();render()}catch{alert('Invalid backup file.')}finally{e.target.value=''}};initTargets();entryModeChange();render();save();
 </script></body></html>

@@ -106,7 +106,7 @@ html{scroll-behavior:smooth;scroll-padding-top:85px}
 <script>
 const SEED=[['Cooked lean white fish',110,22,0,2.4,1],['Cooked lean pork',175,27,0,7.4,1],['Cooked chicken breast',165,31,0,3.6,1],['Cooked lean beef',190,27,0,9,1],['Cooked white rice',130,2.7,28,0.3,0],['Cooking oil',900,0,0,100,0],['Soy sauce',53,8,5,0.6,0],['Chocolate bar (example)',540,7,59,30,0],['Juice drink (example)',44,0,11,0,0],['Kikiam (estimate)',240,8,24,12,0],['Pork siomai (estimate)',210,12,18,10,0],['Vegetable takoyaki (estimate)',180,4,30,5,0],['Cheese bread (estimate)',350,10,55,10,0]].map((x,i)=>({id:'seed'+i,name:x[0],cal:x[1],protein:x[2],carbs:x[3],fat:x[4],isProtein:!!x[5]}));
 const EXTRA_CARBS=[['Cooked oatmeal (water)',71,2.5,12,1.5],['White bread',265,9,49,3.2],['Boiled potato',87,1.9,20,0.1],['Cooked sweet potato',90,2,21,0.2],['Cooked pasta',158,5.8,31,0.9]].map((x,i)=>({id:'carb-v7-'+i,name:x[0],cal:x[1],protein:x[2],carbs:x[3],fat:x[4],isProtein:false,isCarb:true}));
-const COACH_TARGET={cal:1200,protein:55,carbs:110,fat:60};
+const COACH_TARGET={cal:1290,protein:55,carbs:155,fat:50};
 const RED_TARGET={cal:1900,protein:100,carbs:240,fat:60};
 const base={targets:{...COACH_TARGET},targetPreset:"k",targetPresets:{k:{...COACH_TARGET},red:{...RED_TARGET},other:null},foods:[...SEED,...EXTRA_CARBS],logs:{}};
 function load(){try{let v=JSON.parse(localStorage.getItem('dailyplate-v1'));return v&&v.targets&&Array.isArray(v.foods)&&v.logs?v:structuredClone(base)}catch{return structuredClone(base)}}
@@ -128,6 +128,11 @@ if(!state.migrations?.v13){
  state.targetPresets.k={...COACH_TARGET};
  state.targetPresets.red={...RED_TARGET};
  state.migrations={...(state.migrations||{}),v13:true};
+}
+// V14: apply coach targets to K only once, preserving all other user data.
+if(!state.migrations?.v14){
+ state.targetPresets.k={...COACH_TARGET};
+ state.migrations={...(state.migrations||{}),v14:true};
 }
 state.targets={...(state.targetPresets[state.targetPreset]||state.targetPresets.k)};
 if(!state.foods.some(x=>x.id==='seed4'||x.name.toLowerCase()==='cooked white rice'))state.foods.unshift({...SEED[4]});for(let food of EXTRA_CARBS)if(!state.foods.some(x=>x.id===food.id||x.name.toLowerCase()===food.name.toLowerCase()))state.foods.push({...food});const $=id=>document.getElementById(id);const f=n=>Number(n||0);const fmt=n=>Number(n).toFixed(1).replace(/\.0$/,'');const today=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};$('day').value=today();
